@@ -18,6 +18,6 @@ public interface AccountDAO {
 
     void insertTransaction(Transaction transaction) throws SQLException;
 
-    List<Transaction> getTransactionBalance() throws SQLException;
+    List<Transaction> getTransactionBalance(String id) throws SQLException;
 
 }

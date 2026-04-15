@@ -92,7 +92,7 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
-    public List<Transaction> getTransactionBalance() throws SQLException{
+    public List<Transaction> getTransactionBalance(String id) throws SQLException{
         try{
             String sql="select * from transaction where acc_num=?";
             Connection con=DBConnection.getConnection();

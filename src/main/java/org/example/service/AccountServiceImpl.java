@@ -85,7 +85,7 @@ public class AccountServiceImpl implements AccountService{
         AccountDAO accountDAO=new AccountDAOImpl();
         Account account = (Account) accountDAO.getAccount_id(acc_num);
 
-        List<Transaction> list = accountDAO.getTransactionBalance();
+        List<Transaction> list = accountDAO.getTransactionBalance(account.getId());
 
         for (Transaction t : list) {
             System.out.println(t.getAmount());
