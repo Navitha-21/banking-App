@@ -54,26 +54,30 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
-    public int getAccount_id() throws SQLException{
+    public Object getAccount_id(String acc_numFrom) throws SQLException{
         try{
             String sql="select id from account where acc_num=?";
             Connection con=DBConnection.getConnection();
             Statement statement=con.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while(resultSet.next()){
-                System.out.println(resultSet.getInt("id"));
-
+                Account account=new Account();
+                account.setId(resultSet.getString("id"));
+                account.setAcc_num(resultSet.getString("acc_num"));
+                account.setName(resultSet.getString("name"));
+                account.setBalance(resultSet.getDouble("balance"));
+                return account;
             }
         }catch(SQLException ex){
 
         }
-        return id();
+        return null;
     }
 
     @Override
     public void insertTransaction(final Transaction transaction) throws SQLException{
         try {
-            String sql = "insert into account(amount, deposit, withdraw, account_id) values(?, ?, ?, ?)";
+            String sql = "insert into transaction(amount, deposit, withdraw, account_id) values(?, ?, ?, ?)";
             Connection con = DBConnection.getConnection();
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setDouble(1, transaction.getAmount());

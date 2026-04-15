@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.dao.AccountDAO;
+import org.example.dao.AccountDAOImpl;
 import org.example.util.DBConnection;
 import org.example.model.Account;
 import org.example.model.Transaction;
@@ -20,6 +21,7 @@ public class Main {
 //        System.out.println("is connected");
 
         Scanner sc=new Scanner(System.in);
+        AccountService service=new AccountServiceImpl();
         int choice;
         do{
             System.out.println("1.Create Account:");
@@ -65,7 +67,7 @@ public class Main {
                     System.out.print("Amount: ");
                     double wAmount = sc.nextDouble();
 
-                    service.updateBalance(wAcc_num, wAmount);
+                    service.withdraw(wAcc_num, wAmount);
                     break;
                 case 4:
                     System.out.print("From Account: ");

@@ -1,7 +1,7 @@
 package org.example.model;
 
 public class Account {
-    private int id;
+    private String id;
     private String acc_num;
     private String name;
     private String city;
@@ -9,10 +9,10 @@ public class Account {
     private String email;
     private double balance;
 
-    public int getId(){
+    public String getId(){
         return id;
     }
-    public void setId(int id){
+    public void setId(String id){
         this.id=id;
     }
 

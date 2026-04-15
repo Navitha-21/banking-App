@@ -5,7 +5,7 @@ public class Transaction {
     private double amount;
     private String withdraw;
     private String deposit;
-    private String account_id;
+    public String account_id;
 
     public int getId(){
         return id;
@@ -18,6 +18,7 @@ public class Transaction {
         return amount;
     }
     public void setAmount(double amount) {
+
         this.amount = amount;
     }
 

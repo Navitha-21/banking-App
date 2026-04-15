@@ -12,7 +12,7 @@ public interface AccountService {
 
     void withdraw(String acc_num, double amount) throws SQLException;
 
-    void transfer(String tAcc_numFrom, String tAcc_numTo, double amount);
+    void transfer(String acc_numFrom, String acc_numTo, double amount) throws SQLException;
 
-    void transactionHistory(String thAcc_num) throws SQLException;
+    void transactionHistory(String acc_num) throws SQLException;
 }

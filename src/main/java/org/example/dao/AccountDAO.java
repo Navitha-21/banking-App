@@ -13,11 +13,10 @@ public interface AccountDAO {
 
     void updateBalance(String acc_num, double balance) throws SQLException;
 
-    int getAccount_id() throws SQLException;
+    Object getAccount_id(String acc_numFrom) throws SQLException;
 
     void insertTransaction(Transaction transaction) throws SQLException;
 
     void getTransactionBalance() throws SQLException;
-
 
 }
