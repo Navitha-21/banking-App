@@ -35,10 +35,11 @@ public class Main {
 
             switch(choice){
                 case 1:
+                    Account account=new Account();
                     System.out.println("Enter Account number: ");
                     String acc_num=sc.nextLine();
 
-                    System.out.println("Enter name");
+                    System.out.println("Enter name: ");
                     String name=sc.nextLine();
                     System.out.print("Enter City: ");
                     String city = sc.nextLine();
@@ -52,14 +53,14 @@ public class Main {
                     System.out.print("Balance: ");
                     double balance = sc.nextDouble();
                     sc.nextLine();
-                    service.createAccount(acc_num, name, city, phone, email, balance);
+                    service.createAccount(account);
                     break;
                 case 2:
                     System.out.print("Account Number: ");
                     String dAcc_num = sc.nextLine();
                     System.out.print("Amount: ");
                     double dAmount = sc.nextDouble();
-                    service.deposite(dAcc_num, dAmount);
+                    service.deposit(dAcc_num, dAmount);
                     break;
                 case 3:
                     System.out.print("Account No: ");
@@ -75,7 +76,7 @@ public class Main {
                     System.out.print("To Account: ");
                     String tAcc_numTo= sc.nextLine();
                     System.out.print("Amount: ");
-                    String amount = sc.nextLine();
+                    double amount = sc.nextDouble();
 
                     service.transfer(tAcc_numFrom, tAcc_numTo, amount);
                     break;

@@ -4,6 +4,7 @@ import org.example.model.Account;
 import org.example.model.Transaction;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface AccountDAO {
 
@@ -17,6 +18,6 @@ public interface AccountDAO {
 
     void insertTransaction(Transaction transaction) throws SQLException;
 
-    void getTransactionBalance() throws SQLException;
+    List<Transaction> getTransactionBalance() throws SQLException;
 
 }

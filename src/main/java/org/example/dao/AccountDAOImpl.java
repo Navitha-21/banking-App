@@ -5,6 +5,7 @@ import org.example.model.Transaction;
 import org.example.util.DBConnection;
 
 import java.sql.*;
+import java.util.List;
 
 import static java.sql.DriverManager.getConnection;
 
@@ -91,7 +92,7 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
-    public void getTransactionBalance() throws SQLException{
+    public List<Transaction> getTransactionBalance() throws SQLException{
         try{
             String sql="select * from transaction where acc_num=?";
             Connection con=DBConnection.getConnection();
@@ -105,6 +106,7 @@ public class AccountDAOImpl implements AccountDAO {
         }catch(SQLException ex){
 
         }
+        return null;
     }
 
 

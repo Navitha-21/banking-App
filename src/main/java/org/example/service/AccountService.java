@@ -15,4 +15,5 @@ public interface AccountService {
     void transfer(String acc_numFrom, String acc_numTo, double amount) throws SQLException;
 
     void transactionHistory(String acc_num) throws SQLException;
+
 }

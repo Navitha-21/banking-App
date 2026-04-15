@@ -6,6 +6,7 @@ import org.example.model.Account;
 import org.example.model.Transaction;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class AccountServiceImpl implements AccountService{
 
@@ -54,8 +55,8 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void transfer(String acc_numFrom, String acc_numTo, double amount) throws SQLException {
         AccountDAO accountDAO=new AccountDAOImpl();
-        Account from=accountDAO.getAccount_id(acc_numFrom);
-        Account to=accountDAO.getAccount_id(acc_numTo);
+        Account from= (Account) accountDAO.getAccount_id(acc_numFrom);
+        Account to= (Account) accountDAO.getAccount_id(acc_numTo);
 
         if (from.getBalance() < amount) {
             System.out.println("Insufficient balance!");
@@ -63,7 +64,7 @@ public class AccountServiceImpl implements AccountService{
         }
 
         accountDAO.updateBalance(from.getId(), from.getBalance() - amount);
-        accountDAO.updateBalance(from.getId(), from.getBalance() + amount);
+        accountDAO.updateBalance(to.getId(), from.getBalance() + amount);
 
         Transaction t1=new Transaction();
         t1.setAmount(amount);
@@ -82,7 +83,13 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void transactionHistory(String acc_num) throws SQLException{
         AccountDAO accountDAO=new AccountDAOImpl();
-        accountDAO.getTransactionBalance();
+        Account account = (Account) accountDAO.getAccount_id(acc_num);
+
+        List<Transaction> list = accountDAO.getTransactionBalance();
+
+        for (Transaction t : list) {
+            System.out.println(t.getAmount());
+        }
     }
 
 
