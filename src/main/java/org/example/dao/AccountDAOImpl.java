@@ -24,8 +24,9 @@ public class AccountDAOImpl implements AccountDAO {
             preparedStatement.setString(4, account.getPhone());
             preparedStatement.setString(5, account.getEmail());
             preparedStatement.setDouble(6, account.getBalance());
-            preparedStatement.executeUpdate(sql);
+            preparedStatement.execute();
         } catch (SQLException ex) {
+            ex.printStackTrace();
 
         }
         return 0;
@@ -49,8 +50,8 @@ public class AccountDAOImpl implements AccountDAO {
         String sql="update account set balance=? where acc_num=?";
         Connection con=DBConnection.getConnection();
         PreparedStatement preparedStatement = con.prepareStatement(sql);
-        preparedStatement.setString(1, acc_num);
-        preparedStatement.setDouble(2, balance);
+        preparedStatement.setDouble(1, balance);
+        preparedStatement.setString(2, acc_num);
 
         int updatedBalance= preparedStatement.executeUpdate();
         System.out.println("Updated Balance : "+ updatedBalance);
@@ -61,17 +62,19 @@ public class AccountDAOImpl implements AccountDAO {
         try{
             String sql="select * from account where acc_num=?";
             Connection con=DBConnection.getConnection();
-            Statement statement=con.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 Account account=new Account();
                 account.setId(resultSet.getString("id"));
                 account.setAcc_num(resultSet.getString("acc_num"));
                 account.setName(resultSet.getString("name"));
                 account.setBalance(resultSet.getDouble("balance"));
+
                 return account;
             }
         }catch(SQLException ex){
+            ex.printStackTrace();
 
         }
         return null;
@@ -86,8 +89,9 @@ public class AccountDAOImpl implements AccountDAO {
             preparedStatement.setDouble(1, transaction.getAmount());
             preparedStatement.setString(2, transaction.getType());
             preparedStatement.setString(3, transaction.getAccount_id());
-            preparedStatement.executeUpdate();
+            preparedStatement.execute();
         } catch (SQLException ex) {
+            ex.printStackTrace();
 
         }
     }
@@ -99,8 +103,8 @@ public class AccountDAOImpl implements AccountDAO {
         try{
             String sql="select * from transaction where acc_num=?";
             Connection con=DBConnection.getConnection();
-            Statement statement=con.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 System.out.println("Amount:" + resultSet.getDouble ("amount") +
                         " Deposit: " + resultSet.getString("deposit") +

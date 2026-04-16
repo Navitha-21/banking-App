@@ -39,7 +39,6 @@ public class AccountServiceImpl implements AccountService{
     public void withdraw(String acc_num, double amount) throws SQLException {
         AccountDAO accountDAO=new AccountDAOImpl();
         Account account= (Account) accountDAO.getAccount_id(acc_num);
-//        double balance = accountDAO.getBalance();
 
         if (account.getBalance() < amount) {
             System.out.println("Insufficient balance!");
@@ -49,7 +48,7 @@ public class AccountServiceImpl implements AccountService{
         accountDAO.updateBalance(account.getId(), newBalance);
         Transaction transaction=new Transaction();
         transaction.setAmount(amount);
-        transaction.setType("WIthdraw");
+        transaction.setType("Withdraw");
         transaction.setAccount_id(account.getId());
 
         accountDAO.insertTransaction(transaction);

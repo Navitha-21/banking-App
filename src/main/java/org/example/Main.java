@@ -84,13 +84,13 @@ public class Main {
                     break;
                 case 4:
                     System.out.print("From Account: ");
-                    String tAcc_numFrom= sc.nextLine();
+                    String fromAcc_num= sc.nextLine();
                     System.out.print("To Account: ");
-                    String tAcc_numTo= sc.nextLine();
+                    String toAcc_num= sc.nextLine();
                     System.out.print("Amount: ");
                     double amount = sc.nextDouble();
 
-                    service.transfer(tAcc_numFrom, tAcc_numTo, amount);
+                    service.transfer(fromAcc_num, toAcc_num, amount);
                     break;
 
                 case 5:
