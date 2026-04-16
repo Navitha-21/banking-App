@@ -5,6 +5,7 @@ import org.example.model.Transaction;
 import org.example.util.DBConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.sql.DriverManager.getConnection;
@@ -23,6 +24,7 @@ public class AccountDAOImpl implements AccountDAO {
             preparedStatement.setString(4, account.getPhone());
             preparedStatement.setString(5, account.getEmail());
             preparedStatement.setDouble(6, account.getBalance());
+            preparedStatement.executeUpdate(sql);
         } catch (SQLException ex) {
 
         }
@@ -55,9 +57,9 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
-    public Object getAccount_id(String acc_numFrom) throws SQLException{
+    public Account getAccount_id(String acc_num) throws SQLException{
         try{
-            String sql="select id from account where acc_num=?";
+            String sql="select * from account where acc_num=?";
             Connection con=DBConnection.getConnection();
             Statement statement=con.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
@@ -78,13 +80,12 @@ public class AccountDAOImpl implements AccountDAO {
     @Override
     public void insertTransaction(final Transaction transaction) throws SQLException{
         try {
-            String sql = "insert into transaction(amount, deposit, withdraw, account_id) values(?, ?, ?, ?)";
+            String sql = "insert into transaction(amount, type, account_id) values(?, ?, ?)";
             Connection con = DBConnection.getConnection();
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setDouble(1, transaction.getAmount());
-            preparedStatement.setString(2, transaction.getDeposit());
-            preparedStatement.setString(3, transaction.getWithdraw());
-            preparedStatement.setString(4, transaction.getAccount_id());
+            preparedStatement.setString(2, transaction.getType());
+            preparedStatement.setString(3, transaction.getAccount_id());
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
 
@@ -92,7 +93,9 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
-    public List<Transaction> getTransactionBalance(String id) throws SQLException{
+    public List<Transaction> getTransactionBalance(String account_id) throws SQLException{
+        List<Transaction> list = new ArrayList<>();
+
         try{
             String sql="select * from transaction where acc_num=?";
             Connection con=DBConnection.getConnection();
@@ -106,7 +109,7 @@ public class AccountDAOImpl implements AccountDAO {
         }catch(SQLException ex){
 
         }
-        return null;
+        return list;
     }
 
 

@@ -3,8 +3,7 @@ package org.example.model;
 public class Transaction {
     private int id;
     private double amount;
-    private String withdraw;
-    private String deposit;
+    private String type;
     public String account_id;
 
     public int getId(){
@@ -22,19 +21,14 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public String getWithdraw(){
-        return withdraw;
+    public String getType(){
+        return type;
     }
-    public void setWithdraw(String withdraw) {
-        this.withdraw = withdraw;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getDeposit(){
-        return deposit;
-    }
-    public void setDeposit(String deposit) {
-        this.deposit = deposit;
-    }
+
 
     public String getAccount_id(){
         return account_id;

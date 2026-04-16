@@ -16,9 +16,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-//
-//        DBConnection.getConnection();
-//        System.out.println("is connected");
+
+        DBConnection.getConnection();
+        System.out.println("is connected");
 
         Scanner sc=new Scanner(System.in);
         AccountService service=new AccountServiceImpl();
@@ -36,35 +36,47 @@ public class Main {
             switch(choice){
                 case 1:
                     Account account=new Account();
+                    sc.nextLine();
                     System.out.println("Enter Account number: ");
                     String acc_num=sc.nextLine();
+                    account.setAcc_num(acc_num);
 
                     System.out.println("Enter name: ");
                     String name=sc.nextLine();
+                    account.setName(name);
+
                     System.out.print("Enter City: ");
                     String city = sc.nextLine();
+                    account.setCity(city);
 
                     System.out.print("Enter Phone: ");
                     String phone = sc.nextLine();
+                    account.setPhone(phone);
 
                     System.out.print("Enter Email: ");
                     String email = sc.nextLine();
+                    account.setEmail(email);
 
                     System.out.print("Balance: ");
                     double balance = sc.nextDouble();
+                    account.setBalance(balance);
+
                     sc.nextLine();
                     service.createAccount(account);
+
                     break;
                 case 2:
                     System.out.print("Account Number: ");
-                    String dAcc_num = sc.nextLine();
+                    String dAcc_num = sc.next();
+                    sc.nextLine();
                     System.out.print("Amount: ");
                     double dAmount = sc.nextDouble();
                     service.deposit(dAcc_num, dAmount);
                     break;
                 case 3:
                     System.out.print("Account No: ");
-                    String wAcc_num = sc.nextLine();
+                    String wAcc_num = sc.next();
+                    sc.nextLine();
                     System.out.print("Amount: ");
                     double wAmount = sc.nextDouble();
 

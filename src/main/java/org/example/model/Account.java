@@ -1,5 +1,7 @@
 package org.example.model;
 
+import java.util.List;
+
 public class Account {
     private String id;
     private String acc_num;
@@ -8,6 +10,7 @@ public class Account {
     private String phone;
     private String email;
     private double balance;
+    private List<Transaction> transactions;
 
     public String getId(){
         return id;

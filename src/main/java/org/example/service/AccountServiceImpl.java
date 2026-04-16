@@ -14,19 +14,22 @@ public class AccountServiceImpl implements AccountService{
     public void createAccount(final Account account) throws SQLException{
         AccountDAO accountDAO=new AccountDAOImpl();
         accountDAO.createAccount(account);
+        System.out.println("Account created");
     }
 
     @Override
     public void deposit(String acc_num, double amount) throws SQLException {
 
         AccountDAO accountDAO=new AccountDAOImpl();
+        Account account= (Account) accountDAO.getAccount_id(acc_num);
         double balance = accountDAO.getBalance();
         double newBalance = balance + amount;
 
-        accountDAO.updateBalance(acc_num, newBalance);
+        accountDAO.updateBalance(account.getId(), newBalance);
         Transaction transaction=new Transaction();
         transaction.setAmount(amount);
-        transaction.setDeposit(acc_num);
+        transaction.setType("Deposit");
+        transaction.setAccount_id(account.getId());
         accountDAO.insertTransaction(transaction);
 
         System.out.println("Deposit successful!");
@@ -35,17 +38,19 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void withdraw(String acc_num, double amount) throws SQLException {
         AccountDAO accountDAO=new AccountDAOImpl();
-        double balance = accountDAO.getBalance();
+        Account account= (Account) accountDAO.getAccount_id(acc_num);
+//        double balance = accountDAO.getBalance();
 
-        if (balance < amount) {
+        if (account.getBalance() < amount) {
             System.out.println("Insufficient balance!");
             return;
         }
-        double newBalance = balance - amount;
-        accountDAO.updateBalance(acc_num, newBalance);
+        double newBalance = account.getBalance() - amount;
+        accountDAO.updateBalance(account.getId(), newBalance);
         Transaction transaction=new Transaction();
         transaction.setAmount(amount);
-        transaction.setWithdraw(acc_num);
+        transaction.setType("WIthdraw");
+        transaction.setAccount_id(account.getId());
 
         accountDAO.insertTransaction(transaction);
 
