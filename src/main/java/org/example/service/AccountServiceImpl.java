@@ -3,7 +3,7 @@ package org.example.service;
 import org.example.dao.AccountDAO;
 import org.example.dao.AccountDAOImpl;
 import org.example.model.Account;
-import org.example.model.Transaction;
+import org.example.model.Transactions;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,15 +22,19 @@ public class AccountServiceImpl implements AccountService{
 
         AccountDAO accountDAO=new AccountDAOImpl();
         Account account= (Account) accountDAO.getAccount_id(acc_num);
-        double balance = accountDAO.getBalance();
+        if (account == null) {
+            System.out.println("Account not found!");
+            return;
+        }
+        double balance = accountDAO.getBalance(acc_num);
         double newBalance = balance + amount;
 
-        accountDAO.updateBalance(account.getId(), newBalance);
-        Transaction transaction=new Transaction();
-        transaction.setAmount(amount);
-        transaction.setType("Deposit");
-        transaction.setAccount_id(account.getId());
-        accountDAO.insertTransaction(transaction);
+        accountDAO.updateBalance(acc_num, newBalance);
+        Transactions transactions=new Transactions();
+        transactions.setAmount(amount);
+        transactions.setType("Deposit");
+        transactions.setAccount_id(acc_num);
+        accountDAO.insertTransactions(transactions);
 
         System.out.println("Deposit successful!");
     }
@@ -46,12 +50,12 @@ public class AccountServiceImpl implements AccountService{
         }
         double newBalance = account.getBalance() - amount;
         accountDAO.updateBalance(account.getId(), newBalance);
-        Transaction transaction=new Transaction();
-        transaction.setAmount(amount);
-        transaction.setType("Withdraw");
-        transaction.setAccount_id(account.getId());
+        Transactions transactions=new Transactions();
+        transactions.setAmount(amount);
+        transactions.setType("Withdraw");
+        transactions.setAccount_id(account.getId());
 
-        accountDAO.insertTransaction(transaction);
+        accountDAO.insertTransactions(transactions);
 
         System.out.println("Withdraw successful!");
     }
@@ -70,16 +74,16 @@ public class AccountServiceImpl implements AccountService{
         accountDAO.updateBalance(from.getId(), from.getBalance() - amount);
         accountDAO.updateBalance(to.getId(), from.getBalance() + amount);
 
-        Transaction t1=new Transaction();
+        Transactions t1=new Transactions();
         t1.setAmount(amount);
         t1.setAccount_id(from.getId());
 
-        Transaction t2 = new Transaction();
+        Transactions t2 = new Transactions();
         t2.setAmount(amount);
         t2.setAccount_id(to.getId());
 
-        accountDAO.insertTransaction(t1);
-        accountDAO.insertTransaction(t2);
+        accountDAO.insertTransactions(t1);
+        accountDAO.insertTransactions(t2);
 
         System.out.println("Transfer successful!");
     }
@@ -88,10 +92,18 @@ public class AccountServiceImpl implements AccountService{
     public void transactionHistory(String acc_num) throws SQLException{
         AccountDAO accountDAO=new AccountDAOImpl();
         Account account = (Account) accountDAO.getAccount_id(acc_num);
+        if (account == null) {
+            System.out.println("Account not found!");
+            return;
+        }
 
-        List<Transaction> list = accountDAO.getTransactionBalance(account.getId());
+        List<Transactions> list = accountDAO.getTransactionBalance(account.getId());
+        if (list.isEmpty()) {
+            System.out.println("No transactions found!");
+            return;
+        }
 
-        for (Transaction t : list) {
+        for (Transactions t : list) {
             System.out.println(t.getAmount());
         }
     }

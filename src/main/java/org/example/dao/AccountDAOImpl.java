@@ -1,8 +1,9 @@
 package org.example.dao;
 
 import org.example.model.Account;
-import org.example.model.Transaction;
+import org.example.model.Transactions;
 import org.example.util.DBConnection;
+import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -33,11 +34,13 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
-    public double getBalance() throws SQLException{
+    public double getBalance(String acc_num) throws SQLException{
         String sql="select balance from account where acc_num=?";
         Connection con=DBConnection.getConnection();
-        Statement statement=con.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
+        PreparedStatement preparedstatement=con.prepareStatement(sql);
+        preparedstatement.setString(1, acc_num);
+
+        ResultSet resultSet = preparedstatement.executeQuery();
         while(resultSet.next()){
             System.out.println(resultSet.getDouble("balance"));
 
@@ -52,6 +55,7 @@ public class AccountDAOImpl implements AccountDAO {
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setDouble(1, balance);
         preparedStatement.setString(2, acc_num);
+        preparedStatement.executeUpdate();
 
         int updatedBalance= preparedStatement.executeUpdate();
         System.out.println("Updated Balance : "+ updatedBalance);
@@ -60,15 +64,14 @@ public class AccountDAOImpl implements AccountDAO {
     @Override
     public Account getAccount_id(String acc_num) throws SQLException{
         try{
-            String sql="select * from account where acc_num=?";
+            String sql="select * from account where acc_num= ? ";
             Connection con=DBConnection.getConnection();
             PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, acc_num);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 Account account=new Account();
-                account.setId(resultSet.getString("id"));
                 account.setAcc_num(resultSet.getString("acc_num"));
-                account.setName(resultSet.getString("name"));
                 account.setBalance(resultSet.getDouble("balance"));
 
                 return account;
@@ -81,42 +84,40 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
-    public void insertTransaction(final Transaction transaction) throws SQLException{
+    public void insertTransactions(final Transactions transactions) throws SQLException{
         try {
-            String sql = "insert into transaction(amount, type, account_id) values(?, ?, ?)";
+            String sql = "insert into transactions(amount, type, account_id) values(?, ?, ?) ";
             Connection con = DBConnection.getConnection();
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setDouble(1, transaction.getAmount());
-            preparedStatement.setString(2, transaction.getType());
-            preparedStatement.setString(3, transaction.getAccount_id());
-            preparedStatement.execute();
-        } catch (SQLException ex) {
+            preparedStatement.setDouble(1, transactions.getAmount());
+            preparedStatement.setString(2, transactions.getType());
+            preparedStatement.setString(3, transactions.getAccount_id());
+            preparedStatement.executeUpdate();
+
+        } catch (PSQLException ex) {
             ex.printStackTrace();
 
         }
     }
 
     @Override
-    public List<Transaction> getTransactionBalance(String account_id) throws SQLException{
-        List<Transaction> list = new ArrayList<>();
+    public List<Transactions> getTransactionBalance(String account_id) throws SQLException{
+        List<Transactions> list = new ArrayList<>();
 
-        try{
-            String sql="select * from transaction where acc_num=?";
-            Connection con=DBConnection.getConnection();
-            PreparedStatement preparedStatement = con.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                System.out.println("Amount:" + resultSet.getDouble ("amount") +
-                        " Deposit: " + resultSet.getString("deposit") +
-                        " Withdraw: " + resultSet.getString("withdraw"));
-            }
-        }catch(SQLException ex){
-
+        String sql="select * from transactions where account_id=?";
+        Connection con=DBConnection.getConnection();
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
+        preparedStatement.setString(1, account_id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while(resultSet.next()){
+            Transactions transactions=new Transactions();
+           transactions.setAmount(resultSet.getDouble("amount"));
+           transactions.setType(resultSet.getString("type"));
+           transactions.setAccount_id(resultSet.getString("account_id"));
+           list.add(transactions);
         }
+
         return list;
     }
-
-
-
 
 }

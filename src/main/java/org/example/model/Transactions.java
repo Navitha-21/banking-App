@@ -1,10 +1,11 @@
 package org.example.model;
 
-public class Transaction {
+public class Transactions {
     private int id;
     private double amount;
     private String type;
     public String account_id;
+
 
     public int getId(){
         return id;
@@ -36,6 +37,7 @@ public class Transaction {
     public void setAccount_id(String account_id) {
         this.account_id = account_id;
     }
+
 
 
 }

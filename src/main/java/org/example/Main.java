@@ -1,10 +1,7 @@
 package org.example;
 
-import org.example.dao.AccountDAO;
-import org.example.dao.AccountDAOImpl;
 import org.example.util.DBConnection;
 import org.example.model.Account;
-import org.example.model.Transaction;
 import org.example.service.AccountService;
 import org.example.service.AccountServiceImpl;
 
@@ -74,7 +71,7 @@ public class Main {
                     service.deposit(dAcc_num, dAmount);
                     break;
                 case 3:
-                    System.out.print("Account No: ");
+                    System.out.print("Account Number: ");
                     String wAcc_num = sc.next();
                     sc.nextLine();
                     System.out.print("Amount: ");
@@ -84,9 +81,11 @@ public class Main {
                     break;
                 case 4:
                     System.out.print("From Account: ");
-                    String fromAcc_num= sc.nextLine();
+                    String fromAcc_num= sc.next();
+                    sc.nextLine();
                     System.out.print("To Account: ");
-                    String toAcc_num= sc.nextLine();
+                    String toAcc_num= sc.next();
+                    sc.nextLine();
                     System.out.print("Amount: ");
                     double amount = sc.nextDouble();
 
@@ -95,7 +94,8 @@ public class Main {
 
                 case 5:
                     System.out.print("Account No: ");
-                    String thAcc_num = sc.nextLine();
+                    String thAcc_num = sc.next();
+                    sc.nextLine();
 
                     service.transactionHistory(thAcc_num);
                     break;

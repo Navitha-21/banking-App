@@ -10,7 +10,7 @@ public class Account {
     private String phone;
     private String email;
     private double balance;
-    private List<Transaction> transactions;
+    private List<Transactions> transactions;
 
     public String getId(){
         return id;
