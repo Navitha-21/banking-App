@@ -103,7 +103,7 @@ public class AccountDAOImpl implements AccountDAO {
     @Override
     public void getTransactionBalance(String acc_num) throws SQLException{
 
-        String sql="select * from transactions where fromAcc_num=?" + "OR toAcc_num=?";
+        String sql="select * from transactions where fromAcc_num=? OR toAcc_num=?";
 
         Connection con=DBConnection.getConnection();
         PreparedStatement preparedStatement = con.prepareStatement(sql);
