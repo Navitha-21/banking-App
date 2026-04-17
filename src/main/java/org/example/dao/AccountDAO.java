@@ -1,10 +1,8 @@
 package org.example.dao;
 
 import org.example.model.Account;
-import org.example.model.Transactions;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public interface AccountDAO {
 
@@ -16,8 +14,8 @@ public interface AccountDAO {
 
     Object getAccount_id(String acc_num) throws SQLException;
 
-    void insertTransactions(Transactions transaction) throws SQLException;
+    void insertTransactions(String  fromAcc_num, String  toAcc_num, double amount, String type) throws SQLException;
 
-    List<Transactions> getTransactionBalance(String account_id) throws SQLException;
+    void getTransactionBalance(String account_id) throws SQLException;
 
 }

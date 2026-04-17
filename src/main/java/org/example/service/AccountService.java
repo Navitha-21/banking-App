@@ -7,6 +7,8 @@ import java.sql.SQLException;
 public interface AccountService {
     void createAccount(Account account) throws SQLException;
 
+    void updateBalance(String acc_num, double balance) throws SQLException;
+
     void deposit(String acc_num, double amount) throws SQLException;
 
     void withdraw(String acc_num, double amount) throws SQLException;

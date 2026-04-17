@@ -6,7 +6,6 @@ import org.example.model.Account;
 import org.example.model.Transactions;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class AccountServiceImpl implements AccountService{
 
@@ -18,6 +17,11 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    public void updateBalance(String acc_num, double balance) throws SQLException{
+        AccountDAO accountDAO=new AccountDAOImpl();
+        accountDAO.updateBalance(acc_num,balance);
+    }
+    @Override
     public void deposit(String acc_num, double amount) throws SQLException {
 
         AccountDAO accountDAO=new AccountDAOImpl();
@@ -26,15 +30,11 @@ public class AccountServiceImpl implements AccountService{
             System.out.println("Account not found!");
             return;
         }
-        double balance = accountDAO.getBalance(acc_num);
+        double balance = account.getBalance();
         double newBalance = balance + amount;
 
-        accountDAO.updateBalance(acc_num, newBalance);
-        Transactions transactions=new Transactions();
-        transactions.setAmount(amount);
-        transactions.setType("Deposit");
-        transactions.setAccount_id(acc_num);
-        accountDAO.insertTransactions(transactions);
+        accountDAO.updateBalance(account.getAcc_num(), newBalance);
+        accountDAO.insertTransactions((acc_num),null, amount, "Deposit");
 
         System.out.println("Deposit successful!");
     }
@@ -49,41 +49,32 @@ public class AccountServiceImpl implements AccountService{
             return;
         }
         double newBalance = account.getBalance() - amount;
-        accountDAO.updateBalance(account.getId(), newBalance);
-        Transactions transactions=new Transactions();
-        transactions.setAmount(amount);
-        transactions.setType("Withdraw");
-        transactions.setAccount_id(account.getId());
+        accountDAO.updateBalance(acc_num, newBalance);
 
-        accountDAO.insertTransactions(transactions);
+        accountDAO.insertTransactions((acc_num), null, amount, "Withdraw");
 
         System.out.println("Withdraw successful!");
     }
 
     @Override
-    public void transfer(String acc_numFrom, String acc_numTo, double amount) throws SQLException {
+    public void transfer(String fromAcc_num, String toAcc_num, double amount) throws SQLException {
         AccountDAO accountDAO=new AccountDAOImpl();
-        Account from= (Account) accountDAO.getAccount_id(acc_numFrom);
-        Account to= (Account) accountDAO.getAccount_id(acc_numTo);
+        Account from= (Account) accountDAO.getAccount_id(fromAcc_num);
+        double balance=from.getBalance();
+
+        Account to= (Account) accountDAO.getAccount_id(toAcc_num);
+        double tobalance=to.getBalance();
+
 
         if (from.getBalance() < amount) {
             System.out.println("Insufficient balance!");
             return;
         }
 
-        accountDAO.updateBalance(from.getId(), from.getBalance() - amount);
-        accountDAO.updateBalance(to.getId(), from.getBalance() + amount);
+        accountDAO.updateBalance(fromAcc_num, from.getBalance()-amount);
 
-        Transactions t1=new Transactions();
-        t1.setAmount(amount);
-        t1.setAccount_id(from.getId());
+        accountDAO.updateBalance(toAcc_num, from.getBalance() + amount);
 
-        Transactions t2 = new Transactions();
-        t2.setAmount(amount);
-        t2.setAccount_id(to.getId());
-
-        accountDAO.insertTransactions(t1);
-        accountDAO.insertTransactions(t2);
 
         System.out.println("Transfer successful!");
     }
@@ -91,21 +82,8 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void transactionHistory(String acc_num) throws SQLException{
         AccountDAO accountDAO=new AccountDAOImpl();
-        Account account = (Account) accountDAO.getAccount_id(acc_num);
-        if (account == null) {
-            System.out.println("Account not found!");
-            return;
-        }
+        accountDAO.getTransactionBalance(acc_num);
 
-        List<Transactions> list = accountDAO.getTransactionBalance(account.getId());
-        if (list.isEmpty()) {
-            System.out.println("No transactions found!");
-            return;
-        }
-
-        for (Transactions t : list) {
-            System.out.println(t.getAmount());
-        }
     }
 
 
