@@ -59,24 +59,29 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void transfer(String fromAcc_num, String toAcc_num, double amount) throws SQLException {
         AccountDAO accountDAO=new AccountDAOImpl();
-        Account from= (Account) accountDAO.getAccount_id(fromAcc_num);
-        double balance=from.getBalance();
-
-        Account to= (Account) accountDAO.getAccount_id(toAcc_num);
-        double tobalance=to.getBalance();
-
-
-        if (from.getBalance() < amount) {
-            System.out.println("Insufficient balance!");
+        Account from= (Account) accountDAO.getAccount_id(String.valueOf(fromAcc_num));
+        if(from==null){
+            System.out.println("account not found");
             return;
         }
+        double balance=from.getBalance();
+        if(balance<amount){
+            System.out.println("Insufficient Balance");
 
-        accountDAO.updateBalance(fromAcc_num, from.getBalance()-amount);
+        } else {
+            accountDAO.updateBalance(fromAcc_num, from.getBalance()-amount);
+            Account to= (Account) accountDAO.getAccount_id(String.valueOf(toAcc_num));
+            double tobalance=to.getBalance();
 
-        accountDAO.updateBalance(toAcc_num, from.getBalance() + amount);
+            accountDAO.updateBalance(toAcc_num, from.getBalance() + amount);
+            accountDAO.insertTransactions(fromAcc_num, toAcc_num, amount, "Transfer");
 
 
-        System.out.println("Transfer successful!");
+            System.out.println("Transfer successful!");
+
+        }
+
+
     }
 
     @Override
