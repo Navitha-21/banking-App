@@ -65,7 +65,6 @@ public class Main {
                 case 2:
                     System.out.print("Account Number: ");
                     String dAcc_num = sc.next();
-                    sc.nextLine();
                     System.out.print("Amount: ");
                     double dAmount = sc.nextDouble();
                     service.deposit(dAcc_num, dAmount);
@@ -73,7 +72,6 @@ public class Main {
                 case 3:
                     System.out.print("Account Number: ");
                     String wAcc_num = sc.next();
-                    sc.nextLine();
                     System.out.print("Amount: ");
                     double wAmount = sc.nextDouble();
 
@@ -82,10 +80,8 @@ public class Main {
                 case 4:
                     System.out.print("From Account: ");
                     String fromAcc_num= sc.next();
-                    sc.nextLine();
                     System.out.print("To Account: ");
                     String toAcc_num= sc.next();
-                    sc.nextLine();
                     System.out.print("Amount: ");
                     double amount = sc.nextDouble();
 
@@ -95,7 +91,6 @@ public class Main {
                 case 5:
                     System.out.print("Account No: ");
                     String thAcc_num = sc.next();
-                    sc.nextLine();
 
                     service.transactionHistory(thAcc_num);
                     break;
